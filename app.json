@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "おつり", "slug": "otsuri", "version": "1.0.0", "userInterfaceStyle": "dark",
+    "ios": {"supportsTablet": true, "bundleIdentifier": "com.otsuri.calculator"},
+    "android": {"package": "com.otsuri.calculator"},
+    "web": {"name": "おつり", "bundler": "metro"},
+    "plugins": ["./plugins/withResizableActivity.js"]
+  }
+}
