@@ -93,16 +93,17 @@ export default function App() {
   const [split, setSplit] = useState(false);
   const [measuredHeight, setMeasuredHeight] = useState(height);
   const installedPwa = Platform.OS === 'web' && typeof window !== 'undefined' && (window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & {standalone?: boolean}).standalone === true);
-  const desktopPreview = Platform.OS === 'web' && width >= 600 && !installedPwa;
+  const wideScreen = width >= 600;
+  const desktopPreview = Platform.OS === 'web' && wideScreen && !installedPwa;
   const previewHeight = Math.max(0, (height - 48) * (split ? 0.5 : 1));
-  return <SafeAreaProvider><View style={[styles.host, desktopPreview && styles.previewHost]}>
+  return <SafeAreaProvider><View style={[styles.host, wideScreen && styles.previewHost]}>
     {desktopPreview && <View style={styles.previewToolbar}>
       <Text style={styles.previewLabel}>スマホ表示 · 360 × {Math.round(previewHeight)}</Text>
       <Pressable accessibilityRole="button" onPress={() => setSplit(!split)} style={styles.previewToggle}>
         <Text style={styles.previewToggleText}>{split ? '全画面に戻す' : '分割画面で確認'}</Text>
       </Pressable>
     </View>}
-    <View onLayout={event => setMeasuredHeight(event.nativeEvent.layout.height)} style={[styles.viewport, desktopPreview && {width:360, height:previewHeight, flex:0, borderRadius:16, overflow:'hidden'}]}>
+    <View onLayout={event => setMeasuredHeight(event.nativeEvent.layout.height)} style={[styles.viewport, wideScreen && {width:360}, desktopPreview && {height:previewHeight, flex:0, borderRadius:16, overflow:'hidden'}]}>
       <Calculator availableHeight={measuredHeight}/>
     </View>
   </View></SafeAreaProvider>;
@@ -117,7 +118,7 @@ const createStyles = (colors: Theme) => StyleSheet.create({
   previewToggleText: { fontSize: 11, color: colors.accent, fontWeight: '600' },
   screen: { flex: 1, backgroundColor: colors.bg },
   scroll: { flex: 1 },
-  outer: { flexGrow: 1, padding: 16 },
+  outer: { flexGrow: 1, padding: 8 },
   outerCompact: { padding: 8 },
   app: { flexGrow: 1, width: '100%', maxWidth: 440, alignSelf: 'center' },
   workspace: { flexGrow: 1 },

@@ -4,6 +4,11 @@ import { candidateRows, candidates, initialState, reducer } from '../src/calcula
 test('2521円の候補が要求通りになる', () => {
   assert.deepEqual(candidates(2521), [2525,2530,2600,3000,3021,3025,3030,5000,5021,5025,5030,10000,10021,10025,10030]);
 });
+test('2921円では2925円の5円単位の候補を先頭行に表示する', () => {
+  assert.deepEqual(candidateRows(2921), [[2925,2930],[3000,3021,3025,3030],[5000,5021,5025,5030],[10000,10021,10025,10030]]);
+  const state = reducer({ ...initialState, price: '2921' }, {type:'candidate',value:2925});
+  assert.equal(Number(state.received) - Number(state.price), 4);
+});
 test('端数0は重複せず、金額を下回る候補を出さない', () => {
   assert.deepEqual(candidates(5000), [5000,10000]);
   for (const price of [1,99,999,5001,9999,10001,9999999]) {
